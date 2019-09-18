@@ -8,3 +8,10 @@ GET         /hello-world                                     controllers.HelloWo
 
 GET        /sign-out                      controllers.SignOutController.signOut(feedbackOnSignOut: Boolean)
 
+GET         /change-vat-return-dates                         controllers.returnFrequency.ChooseDatesController.show
+POST        /change-vat-return-dates                         controllers.returnFrequency.ChooseDatesController.submit
+
+GET         /confirm-vat-return-dates                        controllers.returnFrequency.ConfirmVatDatesController.show
+POST        /confirm-vat-return-dates                        controllers.returnFrequency.ConfirmVatDatesController.submit
+
+GET         /confirmation-vat-return-dates/:userType         controllers.returnFrequency.ChangeReturnFrequencyConfirmation.show(userType: String)

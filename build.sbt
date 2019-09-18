@@ -40,6 +40,7 @@ lazy val coverageSettings: Seq[Setting[_]] = {
     "common.*",
     "config.*",
     "testOnly.*",
+    "testOnlyDoNotUseInAppConf.*",
     "prod.*",
     "views.*")
 
@@ -55,9 +56,11 @@ val compile = Seq(
   play.sbt.PlayImport.ws,
   "uk.gov.hmrc" %% "govuk-template" % "5.40.0-play-25",
   "uk.gov.hmrc" %% "play-ui" % "8.0.0-play-25",
+  "uk.gov.hmrc" %% "play-partials" % "6.9.0-play-25",
   "uk.gov.hmrc" %% "bootstrap-play-25" % "5.0.0",
   "uk.gov.hmrc" %% "auth-client" % "2.29.0-play-25",
   "uk.gov.hmrc" %% "domain" % "5.6.0-play-25",
+  "org.typelevel" %% "cats" % "0.9.0",
   "uk.gov.hmrc" %% "play-whitelist-filter" % "3.1.0-play-25"
 )
 
@@ -69,7 +72,9 @@ val test = Seq(
   "org.jsoup" % "jsoup" % "1.12.1",
   "com.typesafe.play" %% "play-test" % PlayVersion.current,
   "org.scalamock" %% "scalamock-scalatest-support" % "3.6.0",
-  "com.github.tomakehurst" % "wiremock" % "2.23.2"
+  "com.github.tomakehurst" % "wiremock" % "2.23.2",
+  "org.scalatestplus.play" %% "scalatestplus-play" % "2.0.0",
+  "org.mockito" % "mockito-core" % "2.13.0"
 ).map(_ % s"$Test, $IntegrationTest")
 
 def oneForkedJvmPerTest(tests: Seq[TestDefinition]): Seq[Group] = tests map {

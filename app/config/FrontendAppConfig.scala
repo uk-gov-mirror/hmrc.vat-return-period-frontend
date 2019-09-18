@@ -51,6 +51,7 @@ trait AppConfig extends ServicesConfig {
   val agentActionUrl: String
   val govUkGuidanceMtdVat: String
   val govUkGuidanceAgentServices: String
+  val manageVatUrl: String
 }
 
 @Singleton
@@ -121,4 +122,6 @@ class FrontendAppConfig @Inject()(environment: Environment,implicit val runModeC
   private lazy val accessibilityReportHost : String = getString(ConfigKeys.accessibilityReportHost)
   override val accessibilityReportUrl : String = accessibilityReportHost + getString(ConfigKeys.accessibilityReportUrl)
   override val features: Features = new Features
+
+  override val manageVatUrl: String = getString(ConfigKeys.manageVatHost) + getString(ConfigKeys.manageVatUrl)
 }
