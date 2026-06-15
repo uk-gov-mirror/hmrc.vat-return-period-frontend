@@ -20,6 +20,7 @@
 @import models.auth.User
 @import views.html.MainTemplate
 @import config.AppConfig
+@import utils.UrBannerUtil
 
 @this(mainTemplate: MainTemplate,
       govukBackLink: GovukBackLink,
@@ -61,9 +62,9 @@
   backLinkContent = Some(backLink),
   pageTitle =
     if(form.errors.nonEmpty) messages("common.error.prefixTitle", messages("return_frequency.title"))
-    else messages("return_frequency.title"),
-  user = Some(user),
-    urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, language = if(messages.lang.code == "en") En else Cy))
+      else messages("return_frequency.title"),
+    user = Some(user),
+    urBanner = UrBannerUtil.getUrBanner()
 ) {
 
   @if(form.hasErrors) {

@@ -20,6 +20,7 @@
 @import models.contactPreferences.ContactPreference.{digital, paper}
 @import views.html.MainTemplate
 @import config.AppConfig
+@import utils.UrBannerUtil
 
 @this(mainTemplate: MainTemplate,
       hmrcUserResearchBanner : HmrcUserResearchBanner,
@@ -36,11 +37,7 @@
 @mainTemplate(
     pageTitle = messages("received_frequency.title"),
     user = Some(user),
-    urBanner = Some(UserResearchBanner(
-        url = appConfig.urBannerUrl,
-        hideCloseButton = true,
-        language = if(messages.lang.code == "en") En else Cy
-    ))
+    urBanner = UrBannerUtil.getUrBanner(hideCloseButton = true)
 ) {
 
   <div class="govuk-panel govuk-panel--confirmation">

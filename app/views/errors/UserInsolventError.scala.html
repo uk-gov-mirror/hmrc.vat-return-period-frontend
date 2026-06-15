@@ -16,6 +16,7 @@
 
 @import uk.gov.hmrc.hmrcfrontend.views.html.components._
 @import models.auth.User
+@import utils.UrBannerUtil
 
 @this(mainTemplate: MainTemplate,
       hmrcUserResearchBanner : HmrcUserResearchBanner,
@@ -24,7 +25,7 @@
 @()(implicit user: User[_], messages: Messages, appConfig: config.AppConfig)
 
 @mainTemplate(pageTitle = messages("insolventError.title"), feedbackOnSignOut = false, user = Some(user),
-    urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, language = if(messages.lang.code == "en") En else Cy))) {
+    urBanner = UrBannerUtil.getUrBanner()) {
 
     <h1 class="govuk-heading-l" id="insolvent-without-access-heading">@messages("insolventError.title")</h1>
 

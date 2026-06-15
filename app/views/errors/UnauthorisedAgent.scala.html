@@ -16,6 +16,7 @@
 
 @import uk.gov.hmrc.hmrcfrontend.views.html.components._
 @import views.html.MainTemplate
+@import utils.UrBannerUtil
 
 @this(mainTemplate: MainTemplate,
       hmrcUserResearchBanner : HmrcUserResearchBanner,
@@ -23,8 +24,7 @@
 
 @()(implicit request: Request[_], messages: Messages, appConfig: config.AppConfig)
 
-@mainTemplate(pageTitle = messages("unauthorised_agent.title"),
-    urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, language = if(messages.lang.code == "en") En else Cy))) {
+@mainTemplate(pageTitle = messages("unauthorised_agent.title"), urBanner = UrBannerUtil.getUrBanner()) {
 
     <h1 class="govuk-heading-l">@messages("unauthorised_agent.title")</h1>
 

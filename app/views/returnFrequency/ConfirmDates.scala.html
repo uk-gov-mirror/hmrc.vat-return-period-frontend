@@ -18,6 +18,7 @@
 @import models.returnFrequency.ReturnPeriod
 @import models.auth.User
 @import views.html.MainTemplate
+@import utils.UrBannerUtil
 
 @this(mainTemplate: MainTemplate,
       form: FormWithCSRF,
@@ -29,7 +30,7 @@
 
 @mainTemplate(pageTitle = messages("checkYourAnswers.title"),
     user = Some(user),
-    urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, language = if(messages.lang.code == "en") En else Cy))) {
+    urBanner = UrBannerUtil.getUrBanner()) {
 
   <h1 class="govuk-heading-l">@messages("checkYourAnswers.title")</h1>
 

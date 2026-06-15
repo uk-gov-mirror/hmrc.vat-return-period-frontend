@@ -16,12 +16,13 @@
 
 @import uk.gov.hmrc.hmrcfrontend.views.html.components._
 @import config.AppConfig
+@import utils.UrBannerUtil
 
 @this(mainTemplate: MainTemplate, hmrcUserResearchBanner : HmrcUserResearchBanner)
 
 @(pageTitle: String, heading: String, message: String)(implicit request: RequestHeader, messages: Messages, appConfig: AppConfig)
 
-@mainTemplate(pageTitle = messages(pageTitle), urBanner = Some(UserResearchBanner(url = appConfig.urBannerUrl, language = if(messages.lang.code == "en") En else Cy))) {
+@mainTemplate(pageTitle = messages(pageTitle), urBanner = UrBannerUtil.getUrBanner()) {
 
  <h1 class="govuk-heading-xl">@messages(heading)</h1>
  <p class="govuk-body">@messages(message)</p>
