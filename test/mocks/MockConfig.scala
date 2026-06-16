@@ -53,8 +53,5 @@ class MockConfig(implicit val runModeConfiguration: Configuration) extends AppCo
   override val contactPreferenceURL: String = ""
   override val vatDetailsUrl: String = "vat-details-url"
   override val btaHomeUrl: String = "bta-home"
-  override val urBannerUrl: String => String = {
-    case "cy" => "ur-banner-url-cy"
-    case _    => "ur-banner-url"
-  }
+  override val urBannerBaseUrl: String = "ur-banner-url"
 }

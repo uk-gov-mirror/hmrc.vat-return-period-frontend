@@ -55,7 +55,7 @@ trait AppConfig {
   val gtmContainer: String
   val vatDetailsUrl: String
   val btaHomeUrl: String
-  val urBannerUrl: String => String
+  val urBannerBaseUrl: String
 }
 
 @Singleton
@@ -160,8 +160,5 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
 
   override val gtmContainer: String = servicesConfig.getString(ConfigKeys.gtmContainer)
 
-  override val urBannerUrl: String => String = {
-    case "cy" => servicesConfig.getString(ConfigKeys.urBannerUrl) + "&Q_Language=CY"
-    case _ => servicesConfig.getString(ConfigKeys.urBannerUrl)
-  }
+  override val urBannerBaseUrl: String = servicesConfig.getString(ConfigKeys.urBannerBaseUrl)
 }

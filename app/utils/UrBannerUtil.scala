@@ -22,11 +22,12 @@ import uk.gov.hmrc.hmrcfrontend.views.Aliases.{Cy, En, UserResearchBanner}
 
 object UrBannerUtil {
 
-  def getUrBanner(hideCloseButton:Boolean = false)(implicit appConfig:AppConfig, messages: Messages):Option[UserResearchBanner] =
-    Option.when(appConfig.features.showUserResearchBanner())(UserResearchBanner(
-      language = if(messages.lang.code == "en") En else Cy,
-      url = appConfig.urBannerUrl(messages.lang.code),
-      hideCloseButton = hideCloseButton
-    ))
+  def getUrBanner(hideCloseButton: Boolean = false)(implicit appConfig: AppConfig, messages: Messages): Option[UserResearchBanner] = {
+    val isWelsh = messages.lang.code == "cy"
 
+    val language = if (isWelsh) Cy else En
+    val url = if (isWelsh) s"${appConfig.urBannerBaseUrl}&Q_Language=CY" else appConfig.urBannerBaseUrl
+
+    Option.when(appConfig.features.showUserResearchBanner())(UserResearchBanner(language,url,hideCloseButton))
+  }
 }

@@ -40,7 +40,7 @@ class UrBannerUtilSpec extends BaseSpec {
           mockAppConfig.features.showUserResearchBanner(true)
           UrBannerUtil.getUrBanner()(mockAppConfig, messages) shouldBe Some(UserResearchBanner(
             language = En,
-            url = mockAppConfig.urBannerUrl("en"),
+            url = mockAppConfig.urBannerBaseUrl,
             hideCloseButton = false
           ))
         }
@@ -53,7 +53,7 @@ class UrBannerUtilSpec extends BaseSpec {
           val welshMessages = messagesApi.preferred(Seq(Lang("cy")))
           UrBannerUtil.getUrBanner()(mockAppConfig, welshMessages) shouldBe Some(UserResearchBanner(
             language = Cy,
-            url = mockAppConfig.urBannerUrl("cy"),
+            url = s"${mockAppConfig.urBannerBaseUrl}&Q_Language=CY",
             hideCloseButton = false
           ))
         }
