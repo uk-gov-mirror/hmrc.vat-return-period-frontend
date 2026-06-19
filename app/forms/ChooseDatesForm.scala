@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package forms
 
 import models.returnFrequency.ReturnDatesModel
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 
 object ChooseDatesForm {
 
@@ -26,6 +26,6 @@ object ChooseDatesForm {
     mapping(
       "period-option" -> default(text, "")
         .verifying("chooseDatesForm.frequency.missing", dates => dates.nonEmpty)
-    )(ReturnDatesModel.apply)(ReturnDatesModel.unapply)
+    )(ReturnDatesModel.apply)(returnDatesModel => Some(returnDatesModel.current))
   )
 }

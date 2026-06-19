@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,23 +22,26 @@ import connectors.httpParsers.CircumstanceDetailsHttpParser.CircumstanceDetailsR
 import connectors.httpParsers.ResponseHttpParsers.HttpResult
 import models.circumstanceInfo.CircumstanceDetails
 import models.returnFrequency.{SubscriptionUpdateResponseModel, UpdateReturnPeriod}
-import uk.gov.hmrc.http.{HeaderCarrier, HttpClient}
+import play.api.libs.json.Json
+import play.api.libs.ws.JsonBodyWritables.*
+import uk.gov.hmrc.http.client.HttpClientV2
+import uk.gov.hmrc.http.{HeaderCarrier, StringContextOps}
 import utils.LoggerUtil
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
-class VatSubscriptionConnector @Inject()(val http: HttpClient,
+class VatSubscriptionConnector @Inject()(val http: HttpClientV2,
                                          val config: AppConfig) extends LoggerUtil {
 
-  private[connectors] def getCustomerDetailsUrl(vrn: String) = config.vatSubscriptionBaseURL + s"/vat-subscription/$vrn/full-information"
+  private[connectors] def getCustomerDetailsUrl(vrn: String) = url"${config.vatSubscriptionBaseURL}/vat-subscription/$vrn/full-information"
 
-  private[connectors] def updateReturnPeriodUrl(vrn: String) = config.vatSubscriptionBaseURL + s"/vat-subscription/$vrn/return-period"
+  private[connectors] def updateReturnPeriodUrl(vrn: String) = url"${config.vatSubscriptionBaseURL}/vat-subscription/$vrn/return-period"
 
   def getCustomerCircumstanceDetails(id: String)(implicit headerCarrier: HeaderCarrier, ec: ExecutionContext): Future[HttpResult[CircumstanceDetails]] = {
     val url = getCustomerDetailsUrl(id)
     logger.debug(s"[CustomerDetailsConnector][getCustomerDetails]: Calling getCustomerDetails with URL - $url")
-    http.GET(url)(CircumstanceDetailsReads, headerCarrier, ec)
+    http.get(url).execute[HttpResult[CircumstanceDetails]]
   }
 
   def updateReturnFrequency(vrn: String, frequency: UpdateReturnPeriod)
@@ -47,7 +50,9 @@ class VatSubscriptionConnector @Inject()(val http: HttpClient,
     import connectors.httpParsers.SubscriptionUpdateHttpParser.SubscriptionUpdateReads
 
     val url = updateReturnPeriodUrl(vrn)
-    http.PUT[UpdateReturnPeriod, HttpResult[SubscriptionUpdateResponseModel]](url, frequency)
+    http.put(url)
+      .withBody(Json.toJson(frequency))
+      .execute[HttpResult[SubscriptionUpdateResponseModel]]
   }
 
 }

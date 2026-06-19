@@ -1,5 +1,5 @@
 @*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,16 +15,14 @@
  *@
 
 @import config.AppConfig
-@import uk.gov.hmrc.hmrcfrontend.views.html.helpers._
-@import uk.gov.hmrc.hmrcfrontend.views.html.components._
+@import uk.gov.hmrc.hmrcfrontend.views.html.helpers.*
+@import uk.gov.hmrc.hmrcfrontend.views.html.components.*
 @import models.auth.User
 @import utils.ServiceUrl
 @import views.html.helper.CSPNonce
 
 @this(govukLayout: GovukLayout,
-      govukHeader: GovukHeader,
       hmrcReportTechnicalIssueHelper: HmrcReportTechnicalIssueHelper,
-      hmrcLanguageSelect: HmrcLanguageSelect,
       hmrcTimeoutDialog: HmrcTimeoutDialog,
       hmrcStandardHeader: HmrcStandardHeader,
       hmrcStandardFooter: HmrcStandardFooter,
@@ -55,12 +53,6 @@
 }
 
 @beforeContentHtml = {
-  @hmrcLanguageSelect(LanguageSelect(
-    language = if (messages.lang.language == "en") En else Cy,
-    languageLinks =
-      En -> appConfig.routeToSwitchLanguage("english").url,
-      Cy -> appConfig.routeToSwitchLanguage("cymraeg").url
-  ))
   @backLinkContent
 }
 
@@ -84,8 +76,9 @@
     serviceName = Some(titleServiceName),
     serviceUrl = serviceUrl.generateUrl,
     signOutUrl = if(showSignOut) Some(routes.SignOutController.signOut(feedbackOnSignOut).url) else None,
-    additionalBannersBlock = if(appConfig.features.showUserResearchBanner()) urBanner.map(hmrcUserResearchBanner(_)) else None,
-    displayHmrcBanner = false
+    userResearchBanner = if(appConfig.features.showUserResearchBanner()) urBanner else None,
+    displayHmrcBanner = false,
+    isWelshTranslationAvailable = true
   )
 }
 

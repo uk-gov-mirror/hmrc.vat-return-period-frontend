@@ -16,7 +16,7 @@
 
 package views.errors
 
-import messages.InsolventErrorMessages
+import message.InsolventErrorMessages
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import views.ViewBaseSpec

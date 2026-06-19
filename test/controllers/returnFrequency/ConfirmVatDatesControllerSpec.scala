@@ -122,8 +122,8 @@ class ConfirmVatDatesControllerSpec extends BaseSpec
         }
 
         "a value for annual accounting is in session" should {
-
-            lazy val result = TestConfirmVatDatesController.show(fakeRequest.withSession(
+          
+          lazy val result = TestConfirmVatDatesController.show(fakeRequest.withSession(
             SessionKeys.mtdVatvcCurrentReturnFrequency -> "March",
             SessionKeys.mtdVatvcCurrentAnnualAccounting -> "true")
           )

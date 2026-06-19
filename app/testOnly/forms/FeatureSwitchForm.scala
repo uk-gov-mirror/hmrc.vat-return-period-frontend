@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,7 @@ package testOnly.forms
 
 import config.ConfigKeys
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import testOnly.models.FeatureSwitchModel
 
 object FeatureSwitchForm {
@@ -26,6 +26,6 @@ object FeatureSwitchForm {
   val form: Form[FeatureSwitchModel] = Form(
     mapping(
       ConfigKeys.stubAgentClientLookupFeature -> boolean
-    )(FeatureSwitchModel.apply)(FeatureSwitchModel.unapply)
+    )(FeatureSwitchModel.apply)(featureSwitchModel => Some(featureSwitchModel.stubAgentClientLookupFeature))
   )
 }

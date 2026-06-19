@@ -42,7 +42,6 @@ class ChooseDatesControllerSpec extends BaseSpec with MockCustomerCircumstanceDe
     mockAuthPredicate,
     mockInFlightReturnPeriodPredicate,
     mockInFlightAnnualAccountingPredicate,
-    mockCustomerDetailsService,
     errorHandler,
     mcc,
     mockAuditService

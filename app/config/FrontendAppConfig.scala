@@ -29,33 +29,33 @@ import uk.gov.hmrc.play.bootstrap.config.ServicesConfig
 import java.net.URLEncoder
 
 trait AppConfig {
-  val reportAProblemPartialUrl: String
-  val reportAProblemNonJSUrl: String
-  val betaFeedbackUrl: String
-  val betaFeedbackUnauthenticatedUrl: String
+  lazy val reportAProblemPartialUrl: String
+  lazy val reportAProblemNonJSUrl: String
+  lazy val betaFeedbackUrl: String
+  lazy val betaFeedbackUnauthenticatedUrl: String
   val features: Features
-  val signInUrl: String
-  val timeoutPeriod: Int
-  val timeoutCountdown: Int
+  lazy val signInUrl: String
+  lazy val timeoutPeriod: Int
+  lazy val timeoutCountdown: Int
   def signOutUrl(identifier: String): String
   def exitSurveyUrl(identifier: String): String
-  val unauthorisedSignOutUrl: String
-  val agentClientLookupStartUrl: String => String
-  val agentClientUnauthorisedUrl: String => String
-  val agentClientLookupUrl: String
-  val changeClientUrl: String
-  val govUkGuidanceMtdVat: String
-  val govUkGuidanceAgentServices: String
-  val manageVatUrl: String
+  lazy val unauthorisedSignOutUrl: String
+  lazy val agentClientLookupStartUrl: String => String
+  lazy val agentClientUnauthorisedUrl: String => String
+  lazy val agentClientLookupUrl: String
+  lazy val changeClientUrl: String
+  lazy val govUkGuidanceMtdVat: String
+  lazy val govUkGuidanceAgentServices: String
+  lazy val manageVatUrl: String
   def languageMap: Map[String,Lang]
   val routeToSwitchLanguage: String => Call
   val vatSubscriptionBaseURL: String
   val vatSubscriptionDynamicStubURL: String
   val contactPreferenceURL: String
   val gtmContainer: String
-  val vatDetailsUrl: String
-  val btaHomeUrl: String
-  val urBannerBaseUrl: String
+  lazy val vatDetailsUrl: String
+  lazy val btaHomeUrl: String
+  lazy val urBannerBaseUrl: String
 }
 
 @Singleton
@@ -160,5 +160,5 @@ class FrontendAppConfig @Inject()(environment: Environment, implicit val runMode
 
   override val gtmContainer: String = servicesConfig.getString(ConfigKeys.gtmContainer)
 
-  override val urBannerBaseUrl: String = servicesConfig.getString(ConfigKeys.urBannerBaseUrl)
+  override lazy val urBannerBaseUrl: String = servicesConfig.getString(ConfigKeys.urBannerBaseUrl)
 }

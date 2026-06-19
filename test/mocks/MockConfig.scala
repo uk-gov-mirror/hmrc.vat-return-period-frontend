@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,34 +24,34 @@ import play.api.mvc.Call
 
 class MockConfig(implicit val runModeConfiguration: Configuration) extends AppConfig {
 
-  override val reportAProblemPartialUrl: String = ""
-  override val reportAProblemNonJSUrl: String = ""
-  override val betaFeedbackUrl: String = "feedback-url"
-  override val betaFeedbackUnauthenticatedUrl: String = ""
+  override lazy val reportAProblemPartialUrl: String = ""
+  override lazy val reportAProblemNonJSUrl: String = ""
+  override lazy val betaFeedbackUrl: String = "feedback-url"
+  override lazy val betaFeedbackUnauthenticatedUrl: String = ""
   override val features: Features = new Features()
-  override val signInUrl: String = "sign-in-url"
+  override lazy val signInUrl: String = "sign-in-url"
   override def signOutUrl(identifier: String): String = s"/some-gg-signout-url/$identifier"
   override def exitSurveyUrl(identifier: String): String = s"/some-survey-url/$identifier"
-  override val timeoutPeriod: Int = 1800
-  override val timeoutCountdown: Int = 20
-  override val unauthorisedSignOutUrl: String = "/unauth-signout-url"
-  override val agentClientLookupStartUrl: String => String = uri => s"agent-client-lookup-start-url/$uri"
-  override val agentClientUnauthorisedUrl: String => String = uri => s"agent-client-unauthorised-url/$uri"
-  override val agentClientLookupUrl: String = "/client-vat-account"
-  override val changeClientUrl: String = "/change-client"
-  override val govUkGuidanceMtdVat: String = "mtd-vat"
-  override val govUkGuidanceAgentServices: String = "agent-services"
-  override val manageVatUrl: String = "/manage-vat"
+  override lazy val timeoutPeriod: Int = 1800
+  override lazy val timeoutCountdown: Int = 20
+  override lazy val unauthorisedSignOutUrl: String = "/unauth-signout-url"
+  override lazy val agentClientLookupStartUrl: String => String = uri => s"agent-client-lookup-start-url/$uri"
+  override lazy val agentClientUnauthorisedUrl: String => String = uri => s"agent-client-unauthorised-url/$uri"
+  override lazy val agentClientLookupUrl: String = "/client-vat-account"
+  override lazy val changeClientUrl: String = "/change-client"
+  override lazy val govUkGuidanceMtdVat: String = "mtd-vat"
+  override lazy val govUkGuidanceAgentServices: String = "agent-services"
+  override lazy val manageVatUrl: String = "/manage-vat"
   override val gtmContainer: String = "x"
   override val routeToSwitchLanguage: String => Call = (lang: String) => controllers.routes.LanguageController.switchToLanguage(lang)
   override def languageMap: Map[String, Lang] = Map(
     "english" -> Lang("en"),
     "cymraeg" -> Lang("cy")
   )
-  override val vatSubscriptionBaseURL: String = ""
-  override val vatSubscriptionDynamicStubURL: String = ""
-  override val contactPreferenceURL: String = ""
-  override val vatDetailsUrl: String = "vat-details-url"
-  override val btaHomeUrl: String = "bta-home"
-  override val urBannerBaseUrl: String = "ur-banner-url"
+  override val vatSubscriptionBaseURL: String = "http://localhost"
+  override val vatSubscriptionDynamicStubURL: String = "http://localhost"
+  override val contactPreferenceURL: String = "http://localhost"
+  override lazy val vatDetailsUrl: String = "vat-details-url"
+  override lazy val btaHomeUrl: String = "bta-home"
+  override lazy val urBannerBaseUrl: String = "ur-banner-url"
 }

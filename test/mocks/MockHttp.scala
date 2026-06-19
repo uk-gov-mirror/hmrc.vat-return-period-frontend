@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,28 +16,51 @@
 
 package mocks
 
+import izumi.reflect.Tag as IzumiTag
+import org.scalamock.handlers.CallHandler2
 import org.scalamock.scalatest.MockFactory
-import play.api.libs.json.Writes
+import play.api.libs.json.JsValue
+import play.api.libs.ws.BodyWritable
 import uk.gov.hmrc.http.{HeaderCarrier, HttpReads}
-import uk.gov.hmrc.http.HttpClient
+import uk.gov.hmrc.http.client.{HttpClientV2, RequestBuilder}
 import org.scalatest.wordspec.AnyWordSpecLike
 
+import java.net.URL
 import scala.concurrent.{ExecutionContext, Future}
 
 trait MockHttp extends AnyWordSpecLike with MockFactory {
 
-  val mockHttp: HttpClient = mock[HttpClient]
+  val mockHttp: HttpClientV2 = mock[HttpClientV2]
+  val mockRequestBuilder: RequestBuilder = mock[RequestBuilder]
 
-  def setupMockHttpGet[T](url: String)(response: Future[T]): Unit =
-    (mockHttp.GET[T](_: String, _: Seq[(String, String)], _: Seq[(String, String)])
-                    (_: HttpReads[T], _: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *, *, *, *)
-      .returns(response)
+  def mockHttpClientV2Get(url: URL): CallHandler2[URL, HeaderCarrier, RequestBuilder] =
+    (mockHttp
+      .get(_: URL)(_: HeaderCarrier))
+      .expects(url, *)
+      .returning(mockRequestBuilder)
 
-  def setupMockHttpPut[I,O](url: String)(response: Future[O]): Unit =
-    (mockHttp.PUT[I,O](_: String, _: I, _: Seq[(String, String)])
-                      (_: Writes[I], _: HttpReads[O], _: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *, *, *, *, *)
-      .returns(response)
+  def mockHttpClientV2Execute[O: HttpReads](response: O): CallHandler2[HttpReads[O], ExecutionContext, Future[O]] =
+    (mockRequestBuilder
+      .execute(_: HttpReads[O], _: ExecutionContext))
+      .expects(*, *)
+      .returning(Future.successful(response))
+
+  def mockHttpClientV2ExecuteException[O: HttpReads](response: Throwable): CallHandler2[HttpReads[O], ExecutionContext, Future[O]] =
+    (mockRequestBuilder
+      .execute(_: HttpReads[O], _: ExecutionContext))
+      .expects(*, *)
+      .returning(Future.failed(response))
+
+  def mockHttpClientV2Put(url: URL): CallHandler2[URL, HeaderCarrier, RequestBuilder] =
+    (mockHttp
+      .put(_: URL)(_: HeaderCarrier))
+      .expects(url, *)
+      .returning(mockRequestBuilder)
+
+  def mockHttpClientV2WithBody(): Unit =
+    (mockRequestBuilder
+      .withBody(_: JsValue)(_: BodyWritable[JsValue], _: IzumiTag[JsValue], _: ExecutionContext))
+      .expects(*, *, *, *)
+      .returning(mockRequestBuilder)
 
 }

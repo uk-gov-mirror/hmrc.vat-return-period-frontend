@@ -44,7 +44,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec{
     "A valid ReturnPeriod is returned" should {
 
       "render the page for an individual" in {
-        given.user.isAuthenticated
+        assuming.user.isAuthenticated
 
         When("I call to show the Customer Circumstances page")
         val res = show
@@ -59,7 +59,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec{
 
       "render the page for a agent signed up to agent services" in {
 
-        given.agent.isSignedUpToAgentServices
+        assuming.agent.isSignedUpToAgentServices
 
         When("I call to show the Customer Circumstances page")
         val res = show
@@ -82,7 +82,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec{
 
         "render the ChangeReturnFrequencyConfirmation page" in {
 
-          given.user.isAuthenticated
+          assuming.user.isAuthenticated
 
           And("I stub a successful response from the Payments service")
           putSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
@@ -105,7 +105,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec{
 
         "Render the Internal Server Error page" in {
 
-          given.user.isAuthenticated
+          assuming.user.isAuthenticated
 
           And("I stub an error response from the Payments service")
           putSubscriptionError()
@@ -129,7 +129,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec{
 
         "render the ChangeReturnFrequencyConfirmation page" in {
 
-          given.agent.isSignedUpToAgentServices
+          assuming.agent.isSignedUpToAgentServices
 
           And("I stub a successful response from the Payments service")
           putSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))
@@ -151,7 +151,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec{
 
         "Render the Internal Server Error page" in {
 
-          given.agent.isSignedUpToAgentServices
+          assuming.agent.isSignedUpToAgentServices
 
           And("I stub an error response from the Payments service")
           putSubscriptionError()
@@ -172,7 +172,7 @@ class ConfirmVatDatesControllerISpec extends BasePageISpec{
 
         "render the Agent Unauthorised page" in {
 
-          given.agent.isNotSignedUpToAgentServices
+          assuming.agent.isNotSignedUpToAgentServices
 
           And("I stub a successful response from the Payments service")
           putSubscriptionSuccess(SubscriptionUpdateResponseModel("Good times"))

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,21 +44,18 @@ trait MockAuth extends BaseSpec with MockCustomerCircumstanceDetailsService {
   lazy val mockAuthPredicate: AuthPredicate = new AuthPredicate(mockEnrolmentsAuthService,
     errorHandler, mockCustomerDetailsService, mockAppConfig, mcc, unauthorisedAgentView, unauthorisedNonAgentView, userInsolventErrorView)
 
-  def mockAuthorise(authResponse: Future[~[Option[AffinityGroup], Enrolments]]): Unit = {
-    (mockAuthConnector.authorise(_: Predicate, _: Retrieval[_])(_: HeaderCarrier, _: ExecutionContext))
+  private def mockAuthoriseCall[A](authResponse: Future[A]): Unit =
+    (mockAuthConnector.authorise(_: Predicate, _: Retrieval[A])(_: HeaderCarrier, _: ExecutionContext))
       .expects(*, *, *, *)
       .returns(authResponse)
-  }
+
+  def mockAuthorise(authResponse: Future[~[Option[AffinityGroup], Enrolments]]): Unit =
+    mockAuthoriseCall(authResponse)
 
   def mockAuthoriseAsAgent(firstAuthResponse: Future[~[Option[AffinityGroup], Enrolments]],
                            secondAuthResponse: Future[Enrolments]): Unit = {
-    (mockAuthConnector.authorise(_: Predicate, _: Retrieval[_])(_: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *, *)
-      .returns(firstAuthResponse)
-
-    (mockAuthConnector.authorise(_: Predicate, _: Retrieval[_])(_: HeaderCarrier, _: ExecutionContext))
-      .expects(*, *, *, *)
-      .returns(secondAuthResponse)
+    mockAuthoriseCall(firstAuthResponse)
+    mockAuthoriseCall(secondAuthResponse)
   }
 
   def authControllerChecks(action: Action[AnyContent], request: Request[AnyContent]): Unit = {

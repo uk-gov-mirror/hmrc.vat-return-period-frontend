@@ -24,11 +24,12 @@ import play.api.i18n.{Lang, Messages, MessagesApi, MessagesImpl}
 import play.api.inject.guice.GuiceApplicationBuilder
 import play.api.libs.json.JsValue
 import play.api.libs.ws.{WSClient, WSRequest, WSResponse}
+import play.api.libs.ws.WSBodyWritables._
 import play.api.mvc.AnyContentAsEmpty
 import play.api.test.FakeRequest
 import play.api.{Application, Environment, Mode}
 import stubs.AuthStub
-import uk.gov.hmrc.http.HttpClient
+import uk.gov.hmrc.http.client.HttpClientV2
 import utils.WireMockHelper
 import org.scalatest.matchers.should.Matchers
 import org.scalatest.wordspec.AnyWordSpecLike
@@ -58,7 +59,7 @@ trait BaseISpec extends AnyWordSpecLike
     .configure(servicesConfig)
     .build()
 
-  lazy val httpClient: HttpClient = app.injector.instanceOf[HttpClient]
+  lazy val httpClient: HttpClientV2 = app.injector.instanceOf[HttpClientV2]
   lazy val wsClient: WSClient = app.injector.instanceOf[WSClient]
   lazy val appConfig: AppConfig = app.injector.instanceOf[AppConfig]
   val appRouteContext: String = "/vat-through-software/account/returns"
@@ -87,7 +88,7 @@ trait BaseISpec extends AnyWordSpecLike
     def agent: Agent = new Agent()
   }
 
-  def `given`: PreconditionBuilder = new PreconditionBuilder
+  def assuming: PreconditionBuilder = new PreconditionBuilder
 
   class User()(implicit builder: PreconditionBuilder) {
     def isAuthenticated: PreconditionBuilder = {

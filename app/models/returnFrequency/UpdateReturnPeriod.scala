@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,8 +16,8 @@
 
 package models.returnFrequency
 
-import play.api.libs.functional.syntax._
-import play.api.libs.json._
+import play.api.libs.functional.syntax.*
+import play.api.libs.json.*
 
 case class UpdateReturnPeriod(returnPeriodId: String,
                               transactorOrCapacitorEmail: Option[String])
@@ -30,5 +30,5 @@ object UpdateReturnPeriod {
   implicit val writes: Writes[UpdateReturnPeriod] = (
     returnPeriodPath.write[String] and
       transactorOrCapacitorEmailPath.writeNullable[String]
-    ) (unlift(UpdateReturnPeriod.unapply))
+    ) (unlift((update: UpdateReturnPeriod) => Some(Tuple.fromProductTyped(update))))
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2024 HM Revenue & Customs
+ * Copyright 2026 HM Revenue & Customs
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package testOnly.forms
 
 import play.api.data.Form
-import play.api.data.Forms._
+import play.api.data.Forms.*
 import testOnly.models.StubAgentClientLookupModel
 
 object StubAgentClientLookupForm {
@@ -26,7 +26,7 @@ object StubAgentClientLookupForm {
     mapping("vrn" -> text,
       "redirectUrl" -> text
     )
-    (StubAgentClientLookupModel.apply)(StubAgentClientLookupModel.unapply)
+    (StubAgentClientLookupModel.apply)(model => Some(Tuple.fromProductTyped(model)))
   )
 
 }

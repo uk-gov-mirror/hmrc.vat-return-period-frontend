@@ -23,8 +23,8 @@ lazy val appDependencies: Seq[ModuleID] = compile ++ test
 val appName = "vat-return-period-frontend"
 lazy val plugins: Seq[Plugins] = Seq.empty
 
-val bootstrapPlayVersion = "10.4.0"
-val playFrontendHmrcVersion = "12.22.0"
+val bootstrapPlayVersion = "10.7.0"
+val playFrontendHmrcVersion = "13.9.0"
 
 lazy val coverageSettings: Seq[Setting[?]] = {
   import scoverage.ScoverageKeys
@@ -57,16 +57,16 @@ val compile = Seq(
 
 val test = Seq(
   "uk.gov.hmrc"             %% "bootstrap-test-play-30"       % bootstrapPlayVersion,
-  "org.scalamock"           %% "scalamock"                    % "7.5.1"
+  "org.scalamock"           %% "scalamock"                    % "7.5.5"
 ).map(_ % s"$Test")
 
 TwirlKeys.templateImports ++= Seq(
-  "uk.gov.hmrc.govukfrontend.views.html.components._",
-  "uk.gov.hmrc.hmrcfrontend.views.html.components._"
+  "uk.gov.hmrc.govukfrontend.views.html.components.*",
+  "uk.gov.hmrc.hmrcfrontend.views.html.components.*"
 )
 
 ThisBuild / majorVersion := 0
-ThisBuild / scalaVersion := "2.13.17"
+ThisBuild / scalaVersion := "3.3.7"
 
 lazy val microservice: Project = Project(appName, file("."))
   .enablePlugins((Seq(play.sbt.PlayScala, SbtDistributablesPlugin) ++ plugins) *)
@@ -81,9 +81,11 @@ lazy val microservice: Project = Project(appName, file("."))
     libraryDependencies ++= appDependencies,
     retrieveManaged := true,
     scalacOptions ++= Seq(
-      "-Wconf:cat=unused-imports&site=.*views.html.*:s",
-      "-Wconf:cat=unused-imports&src=routes/.*:s"
+      "-Wconf:msg=unused import&src=.*views.html.*:s",
+      "-Wconf:src=routes/.*:s",
+      "-Wconf:msg=Flag.*repeatedly:s"
     ),
+    scalacOptions ~= (_.filterNot(_ == "-Wunused:all")),
     RoutesKeys.routesImport += "uk.gov.hmrc.play.bootstrap.binders.RedirectUrl"
   )
 

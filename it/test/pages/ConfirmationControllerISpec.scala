@@ -35,7 +35,7 @@ class ConfirmationControllerISpec extends BasePageISpec{
       "authorised" should {
         "render the return frequency confirmation page" in {
 
-          given.user.isAuthenticated
+          assuming.user.isAuthenticated
           VatSubscriptionStub.getClientDetailsSuccess("999999999")(circumstanceDetailsJsonMax)
 
           When("I call to show the Confirm Return Frequency Page")
@@ -52,7 +52,7 @@ class ConfirmationControllerISpec extends BasePageISpec{
 
         "render unauthorised page" in {
 
-          given.user.isNotSignedUpToMtdVat
+          assuming.user.isNotSignedUpToMtdVat
 
           When("I call to show the Confirm Return Frequency Page")
           val res = show()
@@ -73,7 +73,7 @@ class ConfirmationControllerISpec extends BasePageISpec{
 
         "render the return frequency confirmation page" in {
 
-          given.agent.isSignedUpToAgentServices
+          assuming.agent.isSignedUpToAgentServices
 
           And("I stub a successful response from VAT Subscription")
           getClientDetailsSuccess("999999999")(circumstanceDetailsJsonMax)
@@ -92,7 +92,7 @@ class ConfirmationControllerISpec extends BasePageISpec{
 
         "redirect to Enter Client VRN page" in {
 
-          given.agent.isSignedUpToAgentServices
+          assuming.agent.isSignedUpToAgentServices
 
           When("I call to show the Confirm Return Frequency Page")
           val res = show()
@@ -108,7 +108,7 @@ class ConfirmationControllerISpec extends BasePageISpec{
 
         "render the unauthorised error page" in {
 
-          given.agent.isNotSignedUpToAgentServices
+          assuming.agent.isNotSignedUpToAgentServices
 
           When("I call to show the Confirm Return Frequency Page")
           val res = show()

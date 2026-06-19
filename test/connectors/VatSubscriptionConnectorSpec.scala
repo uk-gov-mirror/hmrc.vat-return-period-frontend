@@ -19,7 +19,9 @@ package connectors
 import assets.BaseTestConstants.{agentEmail, errorModel}
 import assets.CircumstanceDetailsTestConstants._
 import base.BaseSpec
+import connectors.httpParsers.CircumstanceDetailsHttpParser.CircumstanceDetailsReads
 import connectors.httpParsers.ResponseHttpParsers.HttpResult
+import connectors.httpParsers.SubscriptionUpdateHttpParser.SubscriptionUpdateReads
 import mocks.MockHttp
 import models.circumstanceInfo.CircumstanceDetails
 import models.returnFrequency.{Jan, SubscriptionUpdateResponseModel, UpdateReturnPeriod}
@@ -39,14 +41,14 @@ class VatSubscriptionConnectorSpec extends BaseSpec with MockHttp {
     "calling the .getCustomerDetailsUrl method" should {
 
       "format the url correctly" in {
-        TestVatSubscriptionConnector.getCustomerDetailsUrl("999999999") should endWith("/vat-subscription/999999999/full-information")
+        TestVatSubscriptionConnector.getCustomerDetailsUrl("999999999").toString should endWith("/vat-subscription/999999999/full-information")
       }
     }
 
     "calling the .updateReturnPeriodUrl method" should {
 
       "format the url correctly" in {
-        TestVatSubscriptionConnector.updateReturnPeriodUrl("999999999") should endWith("/vat-subscription/999999999/return-period")
+        TestVatSubscriptionConnector.updateReturnPeriodUrl("999999999").toString should endWith("/vat-subscription/999999999/return-period")
 
       }
     }
@@ -58,14 +60,17 @@ class VatSubscriptionConnectorSpec extends BaseSpec with MockHttp {
       "a successful response is returned" should {
 
         "return a CustomerDetailsModel" in {
-          setupMockHttpGet(TestVatSubscriptionConnector.getCustomerDetailsUrl(vrn))(Future.successful(Right(circumstanceDetailsModelMax)))
+          mockHttpClientV2Get(TestVatSubscriptionConnector.getCustomerDetailsUrl(vrn))
+          mockHttpClientV2Execute(Right(circumstanceDetailsModelMax): HttpResult[CircumstanceDetails])
           await(result) shouldBe Right(circumstanceDetailsModelMax)
         }
       }
 
       "an unsuccessful response is returned" should {
         "return a Left with an ErrorModel" in {
-          setupMockHttpGet(TestVatSubscriptionConnector.getCustomerDetailsUrl(vrn))(Future.successful(Left(errorModel)))
+          mockHttpClientV2Get(TestVatSubscriptionConnector.getCustomerDetailsUrl(vrn))
+          mockHttpClientV2Execute(Left(errorModel): HttpResult[CircumstanceDetails])
+
           await(result) shouldBe Left(errorModel)
         }
       }
@@ -79,8 +84,11 @@ class VatSubscriptionConnectorSpec extends BaseSpec with MockHttp {
       "provided with a correct subscription update model" should {
 
         "return a SubscriptionUpdateResponseModel" in {
-          val response = Right(SubscriptionUpdateResponseModel("Ooooooh, it's good"))
-          setupMockHttpPut(s"${mockAppConfig.vatSubscriptionBaseURL}/$vrn/return-period")(Future.successful(response))
+          val response: HttpResult[SubscriptionUpdateResponseModel] = Right(SubscriptionUpdateResponseModel("Ooooooh, it's good"))
+          mockHttpClientV2Put(TestVatSubscriptionConnector.updateReturnPeriodUrl("999999999"))
+          mockHttpClientV2WithBody()
+          mockHttpClientV2Execute(response)
+
           await(result) shouldBe response
         }
 
@@ -88,8 +96,11 @@ class VatSubscriptionConnectorSpec extends BaseSpec with MockHttp {
 
       "provided with an error" should {
         "return a Left with an ErrorModel" in {
-          setupMockHttpPut(s"${mockAppConfig.vatSubscriptionBaseURL}/$vrn/return-period")(Future.successful(errorModel))
-          await(result) shouldBe errorModel
+          mockHttpClientV2Put(TestVatSubscriptionConnector.updateReturnPeriodUrl("999999999"))
+          mockHttpClientV2WithBody()
+          mockHttpClientV2Execute(Left(errorModel): HttpResult[SubscriptionUpdateResponseModel])
+
+          await(result) shouldBe Left(errorModel)
         }
       }
     }

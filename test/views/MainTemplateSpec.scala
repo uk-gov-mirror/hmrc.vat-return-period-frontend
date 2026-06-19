@@ -26,7 +26,8 @@ class MainTemplateSpec extends ViewBaseSpec {
   val injectedView: MainTemplate = injector.instanceOf[MainTemplate]
 
   object Selectors {
-    val serviceNameSelector = ".govuk-header__service-name"
+    val serviceNameSelector = ".govuk-service-navigation__service-name"
+    val serviceNameLinkSelector = ".govuk-service-navigation__link"
   }
 
   "The MainTemplate" when {
@@ -41,7 +42,7 @@ class MainTemplateSpec extends ViewBaseSpec {
       }
 
       "have the correct header URL" in {
-        element(Selectors.serviceNameSelector).attr("href") shouldBe mockAppConfig.agentClientLookupUrl
+        element(Selectors.serviceNameLinkSelector).attr("href") shouldBe mockAppConfig.agentClientLookupUrl
       }
 
     }
@@ -56,7 +57,7 @@ class MainTemplateSpec extends ViewBaseSpec {
       }
 
       "have the correct header URL" in {
-        element(Selectors.serviceNameSelector).attr("href") shouldBe mockAppConfig.vatDetailsUrl
+        element(Selectors.serviceNameLinkSelector).attr("href") shouldBe mockAppConfig.vatDetailsUrl
       }
 
     }
@@ -70,8 +71,8 @@ class MainTemplateSpec extends ViewBaseSpec {
         elementText(Selectors.serviceNameSelector) shouldBe "VAT"
       }
 
-      "have the correct header URL" in {
-        element(Selectors.serviceNameSelector).attr("href") shouldBe ""
+      "have no header URL link" in {
+        elementExtinct(Selectors.serviceNameLinkSelector)
       }
 
     }
